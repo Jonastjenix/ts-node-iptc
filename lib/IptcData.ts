@@ -1,48 +1,4 @@
-# ts-node-iptc
-
-This module is based on the node-iptc: https://github.com/derekbaron/node-iptc
-
-This module extracts IPTC information from JPEG files. 
-IPTC is (mostly non-technical) structured metadata about the image with fields like creator/artist, copyright, keywords, category, etc.  
-For more information, see: http://www.adobe.com/devnet-apps/photoshop/fileformatashtml/#50577409_38034
-
-## Installation
-
-Installing using npm:
-
-    npm install ts-node-iptc
-    
-## Example
-
-```typescript
-  import {IptcParser} from "../lib/IptcParser";
-  
-  fs.readFile("myImage.jpeg", function(err, data) {
-      if (err) { throw err }
-      try{
-       let iptcData = IptcParser.parse(data);
-       }catch(err){
-        //TODO: handle exception
-       }
-    });
-```
-
-Sample output
-```
-{
-   "by_line": [
-     "Ralf Roletschek"
-   ],
-   "date_created": "20111119",
-   "time_created": "195544+0000",
-   "copyright_notice": "(C) Ralf Roletschek",
-   "date_time": "2011-12-19T19:55:44.000Z"
- }
-```
-
-supported tags:
-```typescript
-
+export interface IptcData {
 
   object_type_reference?: string;
   object_attribute_reference?: string;
@@ -108,4 +64,4 @@ supported tags:
   object_preview_file_format?: string;
   object_preview_file_format_version?: string;
   object_preview_data?: string;
-```
+}

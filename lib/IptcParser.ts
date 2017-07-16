@@ -15,6 +15,7 @@
 
 
 import {fieldMap} from "./iptcFieldMap";
+import {IptcData} from "./IptcData";
 const field_delimiter = 28;
 const text_start_marker = 2;
 
@@ -23,23 +24,28 @@ export interface BufferType {
   readUInt16BE(_: number): number;
   readInt16BE(_: number): number;
   readInt32BE(_: number): number;
-  slice(strart: number, length: number): BufferType;
+  slice(a: number, b: number): BufferType;
   toString(_: string): string;
 }
 
 export class IptcParser {
-  public static parse(buffer: BufferType) {
+  /**
+   *
+   * @param buffer
+   * @returns {IptcData}
+   * @throws string
+   */
+  public static parse(buffer: BufferType): IptcData {
     // check for jpeg magic bytes header
     if (buffer[0] != 0xFF || buffer[1] != 0xD8) {
-      return false; // it is not a valid jpeg
+      throw "not a jpeg"; // it is not a valid jpeg
     }
 
     let offset = 2;
     // Loop through the file looking for the photoshop header bytes
     while (offset < buffer.length) {
       if (buffer[offset] != 0xFF) {
-        console.log("Not a valid marker at offset " + offset + ", found: " + buffer[offset]);
-        return false;
+        throw "Not a valid marker at offset " + offset + ", found: " + buffer[offset];
       }
 
       let applicationMarker = buffer[offset + 1];
@@ -56,24 +62,23 @@ export class IptcParser {
   }
 
 
-  private static readIPTCData(buffer: BufferType, start: number, length: number) {
-    const data = {};
+  private static readIPTCData(buffer: BufferType, start: number, length: number): IptcData {
+    const data: IptcData = {};
 
-    if (IptcParser.getString(buffer, start, 13) != "Photoshop 3.0") {
-      console.log("Not valid Photoshop data: " + IptcParser.getString(buffer, start, 13));
-      return false;
+    if (buffer.slice(start, start + 13).toString("utf-8") != "Photoshop 3.0") {
+      throw "Not valid Photoshop data: " + buffer.slice(start, start + 13).toString("utf-8");
     }
 
     // There are tons of other potentially useful blocks that could be processed here
     // but are currently discarded.
-    this.extractBlocks(buffer, start + 13, length).forEach(function (block) {
+    this.extractBlocks(buffer, start + 13, length).forEach((block) => {
       // Process IPTC-NAA block 0x0404 (1028)
       if (block.resourceId == 1028) {
         //console.log(block)
         const fields = IptcParser.extractIPTCFieldsFromBlock(buffer, block.startOfBlock, block.sizeOfBlock);
         let date, time;
 
-        fields.forEach(function (field) {
+        fields.forEach((field) => {
 
           //console.log(field)
           if (field.id in fieldMap) {
@@ -121,7 +126,7 @@ export class IptcParser {
     return data;
   }
 
-  private static extractIPTCFieldsFromBlock(buffer: BufferType, start: number, length: number) {
+  private static extractIPTCFieldsFromBlock(buffer: BufferType, start: number, length: number): { id: number, value: string }[] {
     const end = Math.min(buffer.length, start + length);
     const data = [];
 
@@ -143,7 +148,7 @@ export class IptcParser {
         // Convert bytes to string and yield
         data.push({
           id: buffer[i + 1],
-          value: IptcParser.getString(buffer,i + 4, length - 4)
+          value: buffer.slice(i + 4, i + 4 + length - 4).toString("utf-8")
         });
         i += length - 1;
       }
@@ -152,14 +157,19 @@ export class IptcParser {
     return data;
   }
 
-  private static extractBlocks(buffer: BufferType, start: number, length: number) {
+  private static extractBlocks(buffer: BufferType, start: number, length: number): {
+    resourceId: number,
+    name: string,
+    startOfBlock: number,
+    sizeOfBlock: number
+  }[] {
 
     const blocks = [];
     const end = Math.min(buffer.length, start + length);
 
     for (let i = start; i < end; i++) {
       // Signature: '8BIM'
-      if (buffer[i + 0] == 56
+      if (buffer[i] == 56
         && buffer[i + 1] == 66
         && buffer[i + 2] == 73
         && buffer[i + 3] == 77) {
@@ -173,7 +183,7 @@ export class IptcParser {
           nameLength++;
         }
 
-        const name = IptcParser.getString(buffer, i + 6, nameLength);
+        const name = buffer.slice(i + 6, i + 6 + nameLength).toString("utf-8");
 
         const blockSize = buffer.readInt32BE(i + 6 + nameLength);
 
@@ -188,8 +198,4 @@ export class IptcParser {
     return blocks;
   }
 
-  private static getString(buffer: BufferType, offset: number, length: number) {
-    let strBuffer = buffer.slice(offset, offset + length);
-    return strBuffer.toString('utf-8');
-  }
 }

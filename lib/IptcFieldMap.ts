@@ -1,5 +1,6 @@
 //http://fusion.stolaf.edu/cfximage/docs/iptc_list.cfm
 
+
 export const fieldMap = {
   3: {name: "OBJECT_TYPE_REFERENCE"},
   4: {name: "OBJECT_ATTRIBUTE_REFERENCE"},
