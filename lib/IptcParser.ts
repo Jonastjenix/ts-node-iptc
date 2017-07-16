@@ -88,6 +88,7 @@ export class IptcParser {
             const name = fieldMap[field.id].name.toLowerCase();
             const val = field.value;
 
+
             if (fieldMap[field.id].repeatable) {
               if (name in data) {
                 data[name].push(val);

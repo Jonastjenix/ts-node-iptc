@@ -47,7 +47,6 @@ Sample output
 Supported tags:
 ```typescript
 
-
   object_type_reference?: string;
   object_attribute_reference?: string;
   object_name?: string;
@@ -56,20 +55,20 @@ Supported tags:
   urgency?: string;
   subject_reference?: string;
   category?: string;
-  supplemental_categories?: string;
-  fixture_id?: string;
-  keywords?: string;
-  content_location_code?: string;
-  content_location_name?: string;
+  supplemental_categories?: string[];
+  fixture_id?: string[];
+  keywords?: string[];
+  content_location_code?: string[];
+  content_location_name?: string[];
   release_date?: string;
   release_time?: string;
   expiration_date?: string;
   expiration_time?: string;
   special_instructions?: string;
   action_advised?: string;
-  reference_service?: string;
-  reference_date?: string;
-  reference_number?: string;
+  reference_service?: string[];
+  reference_date?: string[];
+  reference_number?: string[];
   date_created?: string;
   time_created?: string;
   digital_date_created?: string;
@@ -77,9 +76,9 @@ Supported tags:
   originating_program?: string;
   program_version?: string;
   object_cycle?: string;
-  by_line?: string;
+  by_line?: string[];
   caption?: string;   // not in spec, but observed in situ
-  by_line_title?: string;
+  by_line_title?: string[];
   city?: string;
   sub_location?: string;
   province_or_state?: string;
@@ -92,7 +91,7 @@ Supported tags:
   copyright_notice?: string;
   contact?: string;
   local_caption?: string;
-  caption_writer?: string;
+  caption_writer?: string[];
   rasterized_caption?: string;
   image_type?: string;
   image_orientation?: string;
