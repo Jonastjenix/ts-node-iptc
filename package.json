@@ -2,8 +2,8 @@
   "name": "ts-node-iptc",
   "author": "Patrik Braun, former: Derek Baron",
   "description": "A node.js library to extract IPTC data from image headers",
-  "version": "1.0.5",
-  "main": "./lib/iptc.js",
+  "version": "1.0.6",
+  "main": "index.js",
   "scripts": {
     "build": "tsc",
     "test": "mocha --recursive test"
