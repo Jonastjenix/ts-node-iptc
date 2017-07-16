@@ -1,5 +1,7 @@
 # ts-node-iptc
 
+[![Build Status](https://travis-ci.org/bpatrik/ts-node-iptc.svg?branch=master)](https://travis-ci.org/bpatrik/ts-node-iptc)
+
 This module is based on the node-iptc: https://github.com/derekbaron/node-iptc
 The reason of this module is that node-iptc did not accept pull requests and does not have typescript type definitions available.
 
