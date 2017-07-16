@@ -1,6 +1,7 @@
 # ts-node-iptc
 
 This module is based on the node-iptc: https://github.com/derekbaron/node-iptc
+The reason of this module is that node-iptc did not accept pull requests and does not have typescript type definitions available.
 
 This module extracts IPTC information from JPEG files. 
 IPTC is (mostly non-technical) structured metadata about the image with fields like creator/artist, copyright, keywords, category, etc.  
