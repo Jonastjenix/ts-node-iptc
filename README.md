@@ -1,5 +1,6 @@
 # ts-node-iptc
 
+[![npm version](https://badge.fury.io/js/ts-node-iptc.svg)](https://badge.fury.io/js/ts-node-iptc)
 [![Build Status](https://travis-ci.org/bpatrik/ts-node-iptc.svg?branch=master)](https://travis-ci.org/bpatrik/ts-node-iptc)
 
 This module is based on the node-iptc: https://github.com/derekbaron/node-iptc
