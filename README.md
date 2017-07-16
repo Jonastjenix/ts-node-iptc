@@ -43,7 +43,7 @@ Sample output
  }
 ```
 
-supported tags:
+Supported tags:
 ```typescript
 
 

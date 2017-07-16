@@ -14,7 +14,7 @@
  */
 
 
-import {fieldMap} from "./iptcFieldMap";
+import {fieldMap} from "./IptcFieldMap";
 import {IptcData} from "./IptcData";
 const field_delimiter = 28;
 const text_start_marker = 2;
