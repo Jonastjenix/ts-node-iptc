@@ -3,6 +3,7 @@
   "author": "Patrik Braun, former: Derek Baron",
   "description": "A node.js library to extract IPTC data from image headers",
   "version": "1.0.7",
+  "license": "MIT",
   "main": "index.js",
   "scripts": {
     "build": "tsc",
