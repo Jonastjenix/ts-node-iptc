@@ -139,7 +139,7 @@ export class IptcParser {
         while (
         i + length < end &&
         buffer[i + length] != field_delimiter &&
-        buffer[i + length + 1] != text_start_marker) {
+        (length < 4 || buffer[i + length + 1] != text_start_marker)) {
           length++;
         }
 
