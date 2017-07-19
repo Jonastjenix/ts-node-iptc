@@ -1,5 +1,5 @@
-/lib/IptcFieldMap.ts
-/lib/IptcParser.ts
+/lib/**/*.ts
+!/lib/**/*.d.ts
 index.ts
 .idea/
 test/
