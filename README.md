@@ -19,7 +19,7 @@ Installing using npm:
 ## Example
 
 ```typescript
-  import {IptcParser} from "../lib/IptcParser";
+  import {IptcParser} from "ts-node-iptc";
   
   fs.readFile("myImage.jpeg", function(err, data) {
       if (err) { throw err }
