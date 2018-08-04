@@ -64,5 +64,5 @@ export interface IptcData {
   object_preview_file_format?: string;
   object_preview_file_format_version?: string;
   object_preview_data?: string;
-  date_time?:Date;
+  date_time?: Date;
 }
