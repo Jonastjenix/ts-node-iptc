@@ -16,15 +16,21 @@
 
 import {fieldMap} from "./IptcFieldMap";
 import {IptcData} from "./IptcData";
+
 const field_delimiter = 28;
 const text_start_marker = 2;
 
 export interface BufferType {
   length: number;
+
   readUInt16BE(_: number): number;
+
   readInt16BE(_: number): number;
+
   readInt32BE(_: number): number;
+
   slice(a: number, b: number): BufferType;
+
   toString(_: string): string;
 }
 
@@ -108,7 +114,7 @@ export class IptcParser {
           try {
             data['date_time'] = new Date(Date.UTC(
               parseInt(date.slice(0, 4)),
-              parseInt(date.slice(4, 6)),
+              parseInt(date.slice(4, 6)) - 1,
               parseInt(date.slice(6, 8)),
               parseInt(time.slice(0, 2)),
               parseInt(time.slice(2, 4)),
@@ -137,9 +143,9 @@ export class IptcParser {
         // Get the length by finding the next field seperator
         let length = 0;
         while (
-        i + length < end &&
-        buffer[i + length] != field_delimiter &&
-        (length < 4 || buffer[i + length + 1] != text_start_marker)) {
+          i + length < end &&
+          buffer[i + length] != field_delimiter &&
+          (length < 4 || buffer[i + length + 1] != text_start_marker)) {
           length++;
         }
 
