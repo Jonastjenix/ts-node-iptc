@@ -68,7 +68,7 @@ export class IptcParser {
   }
 
 
-  private static readIPTCData(buffer: BufferType, start: number, length: number): IptcData {
+  public static readIPTCData(buffer: BufferType, start: number = 0, length: number = buffer.length): IptcData {
     const data: IptcData = {};
 
     if (buffer.slice(start, start + 13).toString("utf-8") != "Photoshop 3.0") {
