@@ -41,7 +41,7 @@ export class IptcParser {
    * @returns {IptcData}
    * @throws string
    */
-  public static parse(buffer: BufferType): IptcData {
+  public static parse(buffer: BufferType, encoding?: string): IptcData {
     // check for jpeg magic bytes header
     if (buffer[0] != 0xFF || buffer[1] != 0xD8) {
       throw "not a jpeg"; // it is not a valid jpeg
@@ -58,7 +58,7 @@ export class IptcParser {
 
       if (applicationMarker == 237) {
         // This is our marker. The content length is 2 byte number.
-        return IptcParser.readIPTCData(buffer, offset + 4, buffer.readUInt16BE(offset + 2));
+        return IptcParser.readIPTCData(buffer, offset + 4, buffer.readUInt16BE(offset + 2), encoding);
       }
       else {
         // Add header length (2 bytes after header type) to offset
@@ -68,11 +68,11 @@ export class IptcParser {
   }
 
 
-  public static readIPTCData(buffer: BufferType, start: number = 0, length: number = buffer.length): IptcData {
+  public static readIPTCData(buffer: BufferType, start: number = 0, length: number = buffer.length, encoding?: string): IptcData {
     const data: IptcData = {};
 
-    if (buffer.slice(start, start + 13).toString("utf-8") != "Photoshop 3.0") {
-      throw "Not valid Photoshop data: " + buffer.slice(start, start + 13).toString("utf-8");
+    if (buffer.slice(start, start + 13).toString(encoding || "utf-8") != "Photoshop 3.0") {
+      throw "Not valid Photoshop data: " + buffer.slice(start, start + 13).toString(encoding || "utf-8");
     }
 
     // There are tons of other potentially useful blocks that could be processed here
@@ -133,7 +133,7 @@ export class IptcParser {
     return data;
   }
 
-  private static extractIPTCFieldsFromBlock(buffer: BufferType, start: number, length: number): { id: number, value: string }[] {
+  private static extractIPTCFieldsFromBlock(buffer: BufferType, start: number, length: number, encoding?: string): { id: number, value: string }[] {
     const end = Math.min(buffer.length, start + length);
     const data = [];
 
@@ -155,7 +155,7 @@ export class IptcParser {
         // Convert bytes to string and yield
         data.push({
           id: buffer[i + 1],
-          value: buffer.slice(i + 4, i + 4 + length - 4).toString("utf-8")
+          value: buffer.slice(i + 4, i + 4 + length - 4).toString(encoding || "utf-8")
         });
         i += length - 1;
       }
@@ -164,7 +164,7 @@ export class IptcParser {
     return data;
   }
 
-  private static extractBlocks(buffer: BufferType, start: number, length: number): {
+  private static extractBlocks(buffer: BufferType, start: number, length: number, encoding?: string): {
     resourceId: number,
     name: string,
     startOfBlock: number,
@@ -190,7 +190,7 @@ export class IptcParser {
           nameLength++;
         }
 
-        const name = buffer.slice(i + 6, i + 6 + nameLength).toString("utf-8");
+        const name = buffer.slice(i + 6, i + 6 + nameLength).toString(encoding || "utf-8");
 
         const blockSize = buffer.readInt32BE(i + 6 + nameLength);
 
